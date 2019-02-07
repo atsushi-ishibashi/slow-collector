@@ -2,6 +2,18 @@
 
 
 [[projects]]
+  digest = "1:1c44f05197d518973df6d9371d4783035dd07ec1cb2049a6e799a59b2cc429b4"
+  name = "github.com/aws/aws-lambda-go"
+  packages = [
+    "lambda",
+    "lambda/messages",
+    "lambdacontext",
+  ]
+  pruneopts = "UT"
+  revision = "527f5d301d2993af078be6d0b63372786b3fc18f"
+  version = "v1.8.2"
+
+[[projects]]
   digest = "1:aab54efc8d46ad6a2a0fd7238bada9f6b8858866ef4913a5206e57f3e715c682"
   name = "github.com/aws/aws-sdk-go"
   packages = [
@@ -58,6 +70,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/aws/aws-lambda-go/lambda",
     "github.com/aws/aws-sdk-go/aws",
     "github.com/aws/aws-sdk-go/aws/session",
     "github.com/aws/aws-sdk-go/service/rds",
