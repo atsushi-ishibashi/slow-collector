@@ -3,6 +3,7 @@ package svc
 import (
 	"errors"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/atsushi-ishibashi/slow-collector/model"
@@ -161,12 +162,16 @@ func (s *rdsService) GetLogData(input GetLogDataInput) (string, error) {
 		DBInstanceIdentifier: aws.String(input.Instance),
 		LogFileName:          aws.String(input.FileName),
 	}
-	result, err := s.svc.DownloadDBLogFilePortion(param)
+	var buff strings.Builder
+	err := s.svc.DownloadDBLogFilePortionPages(param,
+		func(page *rds.DownloadDBLogFilePortionOutput, lastPage bool) bool {
+			if page.LogFileData != nil {
+				buff.WriteString(*page.LogFileData)
+			}
+			return page.Marker != nil
+		})
 	if err != nil {
 		return "", err
 	}
-	if result.LogFileData == nil {
-		return "", errors.New("DownloadDBLogFilePortionOutput.LogFileData is nil")
-	}
-	return *result.LogFileData, nil
+	return buff.String(), nil
 }
