@@ -18,20 +18,15 @@ func main() {
 }
 
 func handler() error {
-	region := os.Getenv("AWS_REGION")
-	defaultRegion := os.Getenv("AWS_DEFAULT_REGION")
-	if region != "" {
-		os.Setenv("_SC_AWS_REGION", region)
-	} else if defaultRegion != "" {
-		os.Setenv("_SC_AWS_REGION", defaultRegion)
-	} else {
-		return errors.New("env AWS_REGION or AWS_DEFAULT_REGION required")
+	if os.Getenv("SC_AWS_REGION") == "" {
+		return errors.New("env SC_AWS_REGION required")
 	}
+	os.Setenv("_SC_AWS_REGION", os.Getenv("SC_AWS_REGION"))
 
-	if os.Getenv("S3_BUCKET") == "" {
-		return errors.New("env S3_BUCKET required")
+	if os.Getenv("SC_S3_BUCKET") == "" {
+		return errors.New("env SC_S3_BUCKET required")
 	}
-	os.Setenv("_SC_S3_BUCKET", os.Getenv("S3_BUCKET"))
+	os.Setenv("_SC_S3_BUCKET", os.Getenv("SC_S3_BUCKET"))
 
 	startTime := time.Now().AddDate(0, 0, -1)
 	endTime := time.Now()
